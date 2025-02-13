@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>永恒之爱 - 情人节快乐</title>
+    <style>
+        :root {
+            --primary-color: #ff3366;
+            --secondary-color: #ff99cc;
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(45deg, #2c0b0e, #6b273a);
+            font-family: '楷体', cursive;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .title {
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 3rem;
+            text-shadow: 0 0 15px rgba(255,51,102,0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .card:hover .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-front {
+            background: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .card-back {
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            transform: rotateY(180deg);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        .music-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            padding: 1rem;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 5px var(--primary-color)); }
+            50% { filter: drop-shadow(0 0 20px var(--primary-color)); }
+        }
+
+        .hearts {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+        }
+
+        .heart::before, .heart::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 16px;
+            background: var(--primary-color);
+            border-radius: 10px 10px 0 0;
+            transform: rotate(-45deg);
+            transform-origin: 0 100%;
+        }
+
+        .heart::after {
+            left: 10px;
+            transform: rotate(45deg);
+            transform-origin: 100% 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <div class="container">
+        <h1 class="title">❤ 情人节快乐 ❤</h1>
+        
+        <div class="gallery">
+            <!-- 重复12次卡片结构 -->
+            <div class="card">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <img src="https://picsum.photos/300/300?random=1" alt="情人节图片">
+                    </div>
+                    <div class="card-back">
+                        山有木兮木有枝，心悦君兮君不知
+                    </div>
+                </div>
+            </div>
+            <!-- 重复其他11张卡片... -->
+        </div>
+    </div>
+
+    <div class="music-player">
+        <audio id="music" loop>
+            <source src="https://cdn.pixabay.com/audio/2022/02/14/audio_d16713f392.mp3" type="audio/mpeg">
+        </audio>
+        <button onclick="togglePlay()">🎵 播放音乐</button>
+    </div>
+
+    <script>
+        function togglePlay() {
+            const audio = document.getElementById('music');
+            if (audio.paused) {
+                audio.play();
+                document.querySelector('button').textContent = '⏸ 暂停音乐';
+            } else {
+                audio.pause();
+                document.querySelector('button').textContent = '🎵 播放音乐';
+            }
+        }
+
+        // 创建飘落爱心
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            for (let i = 0; i < 50; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animation = `fall ${Math.random() * 3 + 2}s linear infinite`;
+                heartsContainer.appendChild(heart);
+            }
+        }
+
+        // 添加CSS动画
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        createHearts();
+    </script>
+</body>
+</html>
